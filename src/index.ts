@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { tools } from "./tools.js";
+import { createRequire } from "module";
+const { version } = createRequire(import.meta.url)("../package.json");
+
+class FortyTwoServer {
+  private mcpServer: McpServer;
+
+  constructor() {
+    this.mcpServer = new McpServer({
+      name: "42 Server",
+      version,
+    });
+
+    this.registerTools();
+  }
+
+  private registerTools() {
+    for (const tool in tools) {
+      this.mcpServer.registerTool(
+        tool,
+        tools[tool].config,
+        tools[tool].handler
+      );
+    }
+  }
+
+  public async run() {
+    const transport = new StdioServerTransport();
+    await this.mcpServer.connect(transport);
+  }
+}
+
+const server = new FortyTwoServer();
+server.run().catch(console.error);

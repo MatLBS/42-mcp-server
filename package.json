@@ -1,0 +1,46 @@
+{
+  "name": "42-mcp-server",
+  "version": "1.0.0",
+  "bin": {
+    "42-mcp-server": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "ci": "npm run build",
+    "prepublishOnly": "npm run ci"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "axios": "^1.18.0",
+    "dotenv": "^17.4.2",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "typescript": "^5.9.3"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatLBS/42-mcp-server.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "llm",
+    "ai-agent",
+    "42",
+    "42-api",
+    "42-mcp-server"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatLBS/42-mcp-server/issues"
+  },
+  "homepage": "https://github.com/MatLBS/42-mcp-server#readme"
+}
