@@ -125,6 +125,110 @@ export const tools: Record<string, Tool> = {
     },
   },
 
+  "42-get-user-quests": {
+    config: {
+      title: "Get User Quests",
+      description: "Get a user's quest progress (in-progress and validated quests)",
+      inputSchema: {
+        idOrLogin: z.string().describe("Numeric user ID or login"),
+      },
+    },
+    handler: async ({ idOrLogin }: any) => {
+      const response = await axiosInstance.get(
+        `/v2/users/${idOrLogin}/quests_users`,
+      );
+      return toResult(response.data);
+    },
+  },
+
+  "42-get-user-titles": {
+    config: {
+      title: "Get User Titles",
+      description: "Get the titles a user has unlocked",
+      inputSchema: {
+        idOrLogin: z.string().describe("Numeric user ID or login"),
+      },
+    },
+    handler: async ({ idOrLogin }: any) => {
+      const response = await axiosInstance.get(
+        `/v2/users/${idOrLogin}/titles`,
+      );
+      return toResult(response.data);
+    },
+  },
+
+  // ==================== ÉQUIPES ====================
+  "42-get-user-teams": {
+    config: {
+      title: "Get User Teams",
+      description:
+        "Get the teams a user has been part of for project defenses (composition, status, final mark)",
+      inputSchema: {
+        idOrLogin: z.string().describe("Numeric user ID or login"),
+        pageSize: z.number().default(30).describe("Page size"),
+        pageNumber: z.number().default(1).describe("Page number"),
+      },
+    },
+    handler: async ({ idOrLogin, pageSize, pageNumber }: any) => {
+      const response = await axiosInstance.get(
+        `/v2/users/${idOrLogin}/teams`,
+        { params: { "page[size]": pageSize, "page[number]": pageNumber } },
+      );
+      return toResult(response.data);
+    },
+  },
+
+  "42-get-team": {
+    config: {
+      title: "Get Team",
+      description:
+        "Get full details of a team by ID (members, status, final mark, repo url)",
+      inputSchema: {
+        teamId: z.number().describe("Team ID"),
+      },
+    },
+    handler: async ({ teamId }: any) => {
+      const response = await axiosInstance.get(`/v2/teams/${teamId}`);
+      return toResult(response.data);
+    },
+  },
+
+  // ==================== COALITIONS & CLASSEMENT ====================
+  "42-get-user-coalition": {
+    config: {
+      title: "Get User Coalition",
+      description: "Get a user's coalition membership and current score",
+      inputSchema: {
+        idOrLogin: z.string().describe("Numeric user ID or login"),
+      },
+    },
+    handler: async ({ idOrLogin }: any) => {
+      const response = await axiosInstance.get(
+        `/v2/users/${idOrLogin}/coalitions_users`,
+      );
+      return toResult(response.data);
+    },
+  },
+
+  "42-get-coalition-scores": {
+    config: {
+      title: "Get Coalition Scores",
+      description: "Get the score history (points gained/lost) of a coalition",
+      inputSchema: {
+        coalitionId: z.number().describe("Coalition ID"),
+        pageSize: z.number().default(30).describe("Page size"),
+        pageNumber: z.number().default(1).describe("Page number"),
+      },
+    },
+    handler: async ({ coalitionId, pageSize, pageNumber }: any) => {
+      const response = await axiosInstance.get(
+        `/v2/coalitions/${coalitionId}/scores`,
+        { params: { "page[size]": pageSize, "page[number]": pageNumber } },
+      );
+      return toResult(response.data);
+    },
+  },
+
   // ==================== VIE DE CAMPUS ====================
   "42-list-campus": {
     config: {
